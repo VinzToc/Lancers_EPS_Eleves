@@ -1,0 +1,30 @@
+<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Lancers EPS – Élèves</title><link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#14151a">
+<link rel="icon" href="icons/icon-192.png"><link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="stylesheet" href="lancers.css">
+</head><body>
+<header><img src="icons/icon-192.png" alt="Logo"><div style="flex:1"><h1>Lancers EPS</h1><p>Javelot · Disque · Poids — version élève</p></div><a class="back" href="https://vinztoc.github.io/Applis_EPS_Eleves/">← Applis</a></header>
+<main>
+<section id="t1" class="tab act">
+ <div class="card"><div class="bandeau" id="bandeau"></div></div>
+ <div id="saisie"></div>
+</section>
+<section id="t2" class="tab"><div class="card"><h2>📊 Mes résultats</h2>
+ <div class="wrap"><table><thead><tr><th>Date</th><th>Épreuve</th><th>Cat.</th><th>Meilleur</th><th>M3</th><th>Prév.</th><th>Note /20</th></tr></thead><tbody id="rTb"></tbody></table></div>
+ <p class="rgpd" id="rSum"></p>
+ <div class="row"><button class="btn b" id="rExp">⬇ Exporter mon fichier (.xlsx)</button><button class="btn r" id="rClr">🗑 Effacer mes saisies</button></div>
+ <p class="rgpd">Remets le fichier .xlsx exporté à ton professeur : il l’importera dans Mes Apps EPS.</p>
+ <p id="rMsg" class="rgpd" style="font-weight:700"></p>
+</div></section>
+</main>
+<p class="ver">Version <span id="ver"></span> · données stockées uniquement sur cet appareil</p>
+<nav><button class="act" data-t="t1">🎯 Saisie</button><button data-t="t2">📊 Mes résultats</button></nav>
+<script src="version.js"></script>
+<script src="eps-core.js"></script>
+<script src="eleve-core.js"></script>
+<script src="bareme-defaut.js"></script>
+<script src="lancers-core.js"></script>
+<script src="lancers-saisie.js"></script>
+<script src="app-eleve.js"></script>
+</body></html>
