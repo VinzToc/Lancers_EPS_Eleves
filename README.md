@@ -1,4 +1,4 @@
-# Lancers EPS – Élèves (version élève, sans paramétrage du barème)
+# Lancers'Projet (espace élève, sans paramétrage du barème)
 PWA pour le portail Applis EPS Élèves — identifiant d'application : `lancers` (identique à la version professeur).
 Déploiement : dépôt `Lancers_EPS_Eleves` → Settings → Pages → `main` / root → https://vinztoc.github.io/Lancers_EPS_Eleves/
 Puis ajouter la ligne de `portails/apps_json_a_ajouter.txt` dans `apps.json` de `Applis_EPS_Eleves`.
