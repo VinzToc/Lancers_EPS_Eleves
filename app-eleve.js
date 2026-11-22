@@ -7,16 +7,19 @@ document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{document.query
 
 const BAR=LANCERS.defaut();
 let cur=null;
-async function majEleve(){try{cur=await ELEVE.courant()}catch(e){cur=null}}
+async function majEleve(){try{cur=await ELEVE.courant()}catch(e){cur=null}try{saisie.refresh()}catch(e){}}
 document.addEventListener('eleve-change',async()=>{await majEleve();if($('#t2').classList.contains('act'))resultats()});
 
-LS.mount($('#saisie'),{
+ELEVE.exigerSexe(); // barème différent filles / garçons : le sexe est obligatoire à l'identification
+const saisie=LS.mount($('#saisie'),{
+ getSx:()=>cur&&cur.sexe?(cur.sexe==='F'?'F':'G'):'',
  getBaremes:()=>BAR,isCustom:()=>false,
  provMsg:'⚠ Barème provisoire pour cette épreuve : la note n’est pas définitive, demande le barème officiel à ton professeur.',
  getWho:()=>({nom:cur?cur.prenom+' '+cur.nom.toUpperCase():'',classe:cur?cur.classe:'',ok:true}),
  saveLabel:'💾 Enregistrer mes résultats',
  onSave:async l=>{
   const e=await ELEVE.demander();await majEleve();
+  if(e&&e.sexe&&l['Catégorie']!==LS.SX[e.sexe==='F'?'F':'G'])throw new Error('Ta catégorie vient d’être réglée sur « '+LS.SX[e.sexe==='F'?'F':'G']+' » : vérifie ton résultat puis enregistre à nouveau.');
   if(!e)throw new Error('Tu n’es pas identifié : rien n’a été enregistré. Utilise « Fiche PDF » ou identifie-toi.');
   const ok=await ELEVE.enregistrer(APP_ID,l);if(!ok)throw new Error('Enregistrement impossible : identifie-toi d’abord.');
   return `✅ Enregistré (${l['Épreuve']}, ${LS.fmt(l.Note_totale,1)}/20). Retrouve-le dans « Mes résultats ».`}
@@ -35,6 +38,6 @@ $('#rClr').onclick=async()=>{if(!confirm('Effacer toutes tes saisies « Lancers 
  try{const ok=await ELEVE.effacerApp(APP_ID);msg(ok?'Saisies effacées.':'Rien à effacer.',ok);resultats()}catch(e){msg('❌ '+(e&&e.message||e),false)}};
 
 (async()=>{await majEleve();ELEVE.bandeau($('#bandeau'));
- if(!cur&&!ELEVE.sansIdentification())ELEVE.demander();
+ if((!cur&&!ELEVE.sansIdentification())||(cur&&!cur.sexe))ELEVE.demander();
  resultats()})();
 if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js');

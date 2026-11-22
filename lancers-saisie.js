@@ -25,7 +25,10 @@ const LS=(function(){
   $('#lsEss',root).innerHTML=[1,2,3,4,5,6].map(i=>`<label>Essai ${i} (m)<input class="ess" inputmode="decimal" placeholder="–" autocomplete="off"></label>`).join('');
   $('#lsSave',root).textContent=o.saveLabel||'💾 Enregistrer';
   const B=()=>o.getBaremes()[st.ep];
+  /* o.getSx() → 'F' | 'G' | '' : catégorie imposée par le sexe de l'élève identifié (version élève) */
+  const imposee=()=>{try{return o.getSx?o.getSx():''}catch(e){return ''}};
   function pills(){
+   if(imposee())st.sx=imposee();
    const bs=o.getBaremes();
    $('#lsEp',root).innerHTML=LANCERS.EPREUVES.map(e=>`<div class="pill ${e===st.ep?'on':''}" data-ep="${e}">${bs[e].emoji} ${esc(bs[e].nom)}</div>`).join('');
    $('#lsSx',root).innerHTML=['F','G'].map(s=>{const w=B().engin[s];return `<div class="pill ${s===st.sx?'on':''}" data-sx="${s}">${s==='F'?'👧':'👦'} ${SX[s]}${w?`<br><small>engin ${esc(w)}</small>`:''}</div>`}).join('');
@@ -67,7 +70,7 @@ const LS=(function(){
    <div class="tot">NOTE FINALE : ${fmt(r.total,1)} / 20</div>
    <p class="ft">Barème : ${o.isCustom(st.ep)?'personnalisé':'par défaut'} · Mes Apps EPS – Lancers</p>`}
   root.addEventListener('click',e=>{const p=e.target.closest('[data-ep]'),s=e.target.closest('[data-sx]');
-   if(p){st.ep=p.dataset.ep;pills();calc()}if(s){st.sx=s.dataset.sx;pills();calc()}});
+   if(p){st.ep=p.dataset.ep;pills();calc()}if(s&&!imposee()){st.sx=s.dataset.sx;pills();calc()}});
   root.addEventListener('input',calc);
   $('#lsReset',root).onclick=()=>{root.querySelectorAll('.ess,#lsPrev').forEach(i=>i.value='');$('#lsMsg',root).textContent='';calc();if(o.onReset)o.onReset()};
   $('#lsPrint',root).onclick=()=>{if(!st.r)return;fiche();window.print()};
